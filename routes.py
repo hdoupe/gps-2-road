@@ -44,25 +44,3 @@ def parseRoutes(routePaths):
 		routes.append({'path':routePath,'coordinates':np.array([lons,lats]).T, 'elvations':np.array(elevs),'timestamps':times})
 	
 	return routes
-	
-# def allCoordinates(routes):
-# 	
-# 	with open ('coordinates.csv','w') as c:
-# 		mlstr = []
-# 		for route in routes:
-# 
-
-	
-if __name__ == '__main__':
-	type = 'Ride'
-	rides = getActivityPaths(type = type)
-	routes = parseRoutes(rides)
-	
-	with open('activity_data/parsed_type_' + type + '.p','wb') as handle:
-		pickle.dump(routes,handle)
-	
-# 	routesToShp(routes)
-	
-# 	with open('activity_data/bike_rides.json','w') as js:
-# 		js.write(json.dumps(routes))
-	
