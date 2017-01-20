@@ -1,11 +1,6 @@
 import pandas as pd
 import numpy as np
 
-# from roads import getRoadsNBoundedBox, unionRoads
-
-	
-# def splitFIPS(FIPS):
-# 	return (FIPS[0:3],FIPS[3:])
 
 def overlap(box, boxVect):
 	a = boxVect[:,2] <= box[0]
@@ -27,7 +22,3 @@ def pointInBox(pt, boxVect):
 	return cond
 	
 	
-# def boundedBox(coord, useNumpy = False
-# 	return (np.min(coord[:,0]), np.min(coord[:,1]), np.max(coord[:,0]), np.max(coord[:,1]))
-
-
