@@ -1,5 +1,4 @@
 import os
-# import matplotlib.pyplot as plt
 import numpy as np
 import fiona
 from bs4 import BeautifulSoup
@@ -17,7 +16,12 @@ def getActivityPaths(type = 'Ride'):
 	
 	return rides
 	
-""" parse routes to list of line strings """
+""" parse routes in gpx file to dictionary containing:
+		path: source gpx file
+		coordinates: list of (longitude, latitude)
+		elevations: list of elevation above sea level in meters
+		timestamp: time of gps emission
+"""
 def parseRoutes(routePaths):
 	routes = []
 	for routePath in routePaths:
@@ -41,6 +45,7 @@ def parseRoutes(routePaths):
 			time = trkpt.find('time')		
 			times.append(time.get_text())
 			
-		routes.append({'path':routePath,'coordinates':np.array([lons,lats]).T, 'elvations':np.array(elevs),'timestamps':times})
+		routes.append({'path':routePath,'coordinates':np.array([lons,lats]).T, \
+			'elvations':np.array(elevs),'timestamps':times})
 	
 	return routes
