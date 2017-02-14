@@ -123,24 +123,3 @@ def getRoadsNBoundedBox(box):
 
 	return results
 
-
-if __name__ == '__main__':
-# 	getRoads()
-# 	unionRoads()
-# 	unionRoads(filter = {'state_abbreviation' : ['GA'], 'county_name':['McDuffie County','Warren County','Glascock County']})
-
-	map = createBoundedBox()
-	with open('roads/roads_bounded_box.p', 'wb') as bb:
-		pickle.dump(map,bb)
-		
-	
-# 	with open('activity_data/parsed_type_Ride.p', 'rb') as pick: rides = pickle.load(pick)
-# 	
-# 	c = np.array(rides[0]['coordinates'])
-
-# 	print (c.shape)
-# 	
-# 	print (c)
-# 	print (getRoadsNBoundedBox((np.min(c[:,0]), np.min(c[:,1]), np.max(c[:,0]), np.max(c[:,1]))))
-	
-	
