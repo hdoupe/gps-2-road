@@ -8,7 +8,7 @@ def overlap(box, boxVect):
 	c = boxVect[:,3] <= box[1]
 	d = boxVect[:,1] >= box[3]
 	cond = np.any([a,b,c,d], axis = 0)
-	
+
 	return ~cond
 
 def pointInBox(pt, boxVect):
@@ -20,5 +20,16 @@ def pointInBox(pt, boxVect):
 	cond = np.all([a,b,c,d], axis = 0)
 
 	return cond
-	
-	
+
+def sample(times, interval = 5):
+	select = []
+	s = times[0]
+
+	for time in times[1:]:
+		if (time - s).seconds > interval:
+			select.append(False)
+		else:
+			select.append(True)
+			s = time
+
+	return select
