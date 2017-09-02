@@ -1,0 +1,7 @@
+name: gps_proj
+dependencies:
+- numpy =1.11.1
+- fiona =1.7.0
+- shapely =1.5.17
+- pandas =0.18.1
+- beautifulsoup4 =4.5.1
