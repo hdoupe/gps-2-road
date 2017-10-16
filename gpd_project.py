@@ -33,7 +33,6 @@ def map_match(route, roads):
     results = route.geometry.apply(project.project_point)
 
 if __name__ == "__main__":
-    route_path = "/Users/HANK/Documents/activities/gps_2_road/activity_data/Point_shp_data/20170909-000000-Ride"
     route_path = "/Users/HANK/Documents/activities/gps_2_road/activity_data/Point_shp_data/20170827-121415-Ride"
     route = gpd.read_file(route_path)
     road_path = "/Users/HANK/Documents/activities/gps_2_road/roads/tiger/11001_roads"
