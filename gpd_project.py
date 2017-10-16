@@ -31,29 +31,6 @@ def map_match(route, roads):
     project = Project(roads)
     # project = lambda pt: project.project_point(pt)
     results = route.geometry.apply(project.project_point)
-    print(results)
-    lookup = {}
-    print()
-    for i in range(len(results)):
-        if results[i] in lookup:
-            lookup[results[i]].append(i)
-        else:
-            lookup[results[i]] = [i]
-
-    result_set = lookup.keys()
-    map_idx_to_row = {}
-    for result, idxs in result_set.items():
-        row = roads.loc[roads.geometry==result,]
-        for idx in idxs:
-            assert idx not in map_idx_to_row
-            map_idx_to_row[idx] = row
-    to_concatenate = []
-    for idx in range(len(route)):
-        assert idx in map_idx_to_row
-        to_concatenate.append(map_idx_to_row[idx])
-
-    df = gpd.concatenate(to_concatenate, axis=0)
-    print(df)
 
 if __name__ == "__main__":
     route_path = "/Users/HANK/Documents/activities/gps_2_road/activity_data/Point_shp_data/20170909-000000-Ride"
