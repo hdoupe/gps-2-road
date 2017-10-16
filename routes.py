@@ -77,7 +77,7 @@ def routes_to_shp(routes, path_out="routes_shp/routes.shp", output_type="LineStr
 			for j in range(len(route['coordinates'])):
 				rec = {}
 				rec['id'] = str(i + j)
-				rec['geometry'] = {'coordinates': (route['coordinates'][i, 0], route['coordinates'][i, 1]),
+				rec['geometry'] = {'coordinates': (route['coordinates'][j, 0], route['coordinates'][j, 1]),
 							       'type': 'Point'}
 				rec['properties'] = {'path':route['path'],
 									 'time': route['timestamp'][i]}
