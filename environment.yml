@@ -1,4 +1,4 @@
-name: gps_proj_2
+name: gps_proj
 channels:
 - conda-forge
 - anaconda
@@ -13,3 +13,4 @@ dependencies:
 - rtree
 - shapely
 - geopandas
+- lxml
