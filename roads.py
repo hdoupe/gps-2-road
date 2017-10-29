@@ -12,13 +12,16 @@ from utils import overlap
 from fips import getFIPS
 
 
-def getRoads(states = [], counties = []):
-	fips = getFIPS(fips_filter = {'state_abbreviation':states, 'county_name':counties})
+def getRoads(fips_df = None, states = [], counties = []):
+	if fips_df is None:
+		fips_df = getFIPS(fips_filter = {'state_abbreviation':states,
+		                                 'county_name':counties})
+
 	ftp = "ftp://ftp2.census.gov/geo/tiger/TIGER2016/ROADS/tl_2016_{state_fips}{county_fips}_roads.zip"
 	dir = 'roads/tiger/{state_fips}{county_fips}_roads'
 	errors = {'states':[],'counties': []}
 
-	for i,row in fips.iterrows():
+	for i,row in fips_df.iterrows():
 		state_fips,county_fips = row['state_fips'],row['county_fips']
 		print (state_fips,county_fips)
 
@@ -60,9 +63,9 @@ def unionRoads(fips_filter = {}):
 	if not os.path.exists('union_roads/{}/'.format(allBase)):
 		os.mkdir('union_roads/{}/'.format(allBase))
 
-	fips = getFIPS(fips_filter=fips_filter)
+	fips_df = getFIPS(fips_filter=fips_filter)
 
-	for i,row in fips.iterrows():
+	for i,row in fips_df.iterrows():
 		state_fips, county_fips = row['state_fips'],row['county_fips']
 
 		with fiona.open(base.format(state_fips=state_fips, county_fips=county_fips), 'r') as shp:
