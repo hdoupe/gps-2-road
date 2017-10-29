@@ -2,6 +2,8 @@ from roads import *
 from routes import *
 from project import Project
 
+import geopandas as gpd
+import fips
 
 def main(states=[]):
 	print ('getting roads...')
@@ -20,5 +22,12 @@ def main(states=[]):
 		proj.project(proj.boundedBoxes[i], interval = 10)
 
 
+def main2():
+	route_path = "/Users/HANK/Documents/activities/gps_2_road/activity_data/Point_shp_data/20170827-121415-Ride"
+	route = gpd.read_file(route_path)
+	fips_df = fips.get_overlapping_counties(route)
+	getRoads(fips_df=fips_df)
+
 if __name__ == '__main__':
-	main(states=['GA', 'DC'])
+	main2()
+	# main(states=['GA', 'DC'])
