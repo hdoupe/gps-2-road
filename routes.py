@@ -106,21 +106,27 @@ def routes_to_shp_setup(activity_type='Ride'):
 	routes_to_shp(routes)
 
 
-def convert_gpx_to_shp(gpx_path, output_type="LineString"):
+def convert_gpx_to_shp(gpx_path, output_type="LineString", overwrite=True):
+	base_dir = 'activity_data/{0}_shp_data/'.format(output_type)
 	shp_dir = gpx_path[gpx_path.rfind('/') + 1: gpx_path.rfind('.gpx')]
-	shp_dir = 'activity_data/{0}_shp_data/'.format(output_type) + shp_dir
-	if not os.path.exists(shp_dir):
-		os.mkdir(shp_dir)
-	shp_file = shp_dir + '/route.shp'
+	final_shp_dir = os.path.join(base_dir, shp_dir)
+	shp_file = os.path.join(final_shp_dir, 'route.shp')
+
+	if overwrite or (not overwrite and os.path.exists(ship_file)):
+		return
+
+	if not os.path.exists(final_shp_dir):
+		os.mkdir(final_shp_dir)
+
 	route = parse_routes([gpx_path])
 	routes_to_shp(route, shp_file, output_type=output_type)
 
 
-def convert_all_gpx_to_shp(activity_type='Ride', output_type="LineString"):
+def convert_all_gpx_to_shp(activity_type='Ride', output_type="LineString",
+						   overwrite=True):
 	gpx_paths = get_activity_paths(activity_type=activity_type)
-
 	for gp in gpx_paths:
-		convert_gpx_to_shp(gp, output_type=output_type)
+		convert_gpx_to_shp(gp, output_type=output_type, overwrite=overwrite)
 
 
 def get_geopandas_from_shp(activity_type="Ride", output_type="LineString"):
