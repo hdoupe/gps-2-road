@@ -11,6 +11,8 @@ from shapely.geometry import shape
 from utils import overlap
 from fips import get_fips
 
+import geopandas as gpd
+import pandas as pd
 
 def get_roads(fips_df = None, states = [], counties = []):
 	if fips_df is None:
@@ -43,7 +45,20 @@ def get_roads(fips_df = None, states = [], counties = []):
 
 	if len(errors['states']) > 0:
 		time.sleep(300)
-		roads(states = errors['states'], counties = errors['counties'])
+		getRoads(states = errors['states'], counties = errors['counties'])
+
+
+def concatenate_roads(fips_df):
+	roads_dfs = []
+	template = "roads/tiger/{0}{1}_roads/tl_2016_{2}{3}_roads.shp"
+	for _, row in fips_df.iterrows():
+		state_fips, county_fips = row["state_fips"], row["county_fips"]
+		roads_dfs.append(
+		    gpd.read_file(template.format(state_fips, county_fips,
+		                                  state_fips, county_fips))
+		)
+
+	return pd.concat(roads_dfs)
 
 
 def union_roads(fips_filter = {}):

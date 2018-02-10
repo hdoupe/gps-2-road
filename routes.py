@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import json
 
 from shapely.geometry import Point
-
+import geopandas as gpd
 
 def get_activity_paths(activity_type = 'Ride'):
 	activities = os.listdir('activity_data/gpx_data')
@@ -121,3 +121,15 @@ def convert_all_gpx_to_shp(activity_type='Ride', output_type="LineString"):
 
 	for gp in gpx_paths:
 		convert_gpx_to_shp(gp, output_type=output_type)
+
+
+def get_geopandas_from_shp(activity_type="Ride", output_type="LineString"):
+	DIR = "activity_data/{0}_shp_data/".format(output_type)
+	gpx_paths = os.listdir(DIR)
+
+	gpd_dfs = []
+	for gp in gpx_paths:
+		if activity_type in gp:
+			gpd_dfs.append(gpd.read_file(DIR + gp + "/route.shp"))
+
+	return gpd_dfs
