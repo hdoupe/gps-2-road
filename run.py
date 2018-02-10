@@ -7,13 +7,13 @@ import fips
 
 def main(states=[]):
 	print ('getting roads...')
-	getRoads(states=states)
+	get_roads(states=states)
 	print ('creating inverse map of road to bounded box...')
 	road_map = get_road_map()
 	print ('parsing activities...')
 	activity_type = 'Ride'
-	paths = getActivityPaths(activity_type = activity_type)
-	routes = parseRoutes(paths)
+	paths = get_activity_paths(activity_type = activity_type)
+	routes = parse_routes(paths)
 	print ('projecting activities...')
 	proj = Project(routes)
 
@@ -26,7 +26,7 @@ def main2():
 	route_path = "/Users/HANK/Documents/activities/gps_2_road/activity_data/Point_shp_data/20170827-121415-Ride"
 	route = gpd.read_file(route_path)
 	fips_df = fips.get_overlapping_counties(route)
-	getRoads(fips_df=fips_df)
+	get_roads(fips_df=fips_df)
 
 if __name__ == '__main__':
 	main2()

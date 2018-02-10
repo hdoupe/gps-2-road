@@ -11,7 +11,7 @@ def overlap(box, boxVect):
 
 	return ~cond
 
-def pointInBox(pt, boxVect):
+def point_in_box(pt, boxVect):
 	a = boxVect[:,0] <= pt[0]
 	b = boxVect[:,2] >= pt[0]
 	c = boxVect[:,1] <= pt[1]

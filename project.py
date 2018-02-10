@@ -1,10 +1,10 @@
 import fiona
 import shapely
 import numpy as np
-from fips import getFIPS
+from fips import get_fips
 import utils
 from boundedBoxes import getBoundedBoxes
-from roads import get_road_map, getRoadsNBoundedBox, unionRoads
+from roads import get_road_map, get_roads_in_bounded_box, union_roads
 import matplotlib.pyplot as plt
 import os
 
@@ -61,7 +61,7 @@ class Project():
 					point = shapely.geometry.Point((geom[i,0], geom[i,1]))
 
 # 					get all bounded boxes containing the point
-					candidates = boxes[utils.pointInBox((point.x, point.y), boxes)]
+					candidates = boxes[utils.point_in_box((point.x, point.y), boxes)]
 					if candidates.shape[0] == 0:
 						continue
 					minimizer = (1000000.0,None)

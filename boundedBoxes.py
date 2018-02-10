@@ -1,6 +1,6 @@
 import numpy as np
 from utils import overlap
-from roads import unionRoads, getRoadsNBoundedBox
+from roads import union_roads, get_roads_in_bounded_box
 
 def getBoundedBoxes(routes, map_box_to_road):
 	"""
@@ -53,7 +53,7 @@ def getBoundedBoxes(routes, map_box_to_road):
 	keep = np.array(keep)
 	for i in range(boundedBoxes.shape[0]):
 		bb = tuple(boundedBoxes[i])
-		fips = getRoadsNBoundedBox(bb, map_box_to_road)
+		fips = get_roads_in_bounded_box(bb, map_box_to_road)
 		# don't have road data for this bounded box
 		if len(fips) == 0:
 			keep[i] = False
@@ -61,7 +61,7 @@ def getBoundedBoxes(routes, map_box_to_road):
 			continue
 		fips_filter = {'state_fips':[f['state_fips'] for f in fips], \
 			'county_fips':[f['county_fips'] for f in fips]}
-		box_to_roads[bb] = unionRoads(fips_filter=fips_filter)
+		box_to_roads[bb] = union_roads(fips_filter=fips_filter)
 	boundedBoxes = boundedBoxes[keep]
 	return boundedBoxes, box_to_roads, boxToRoutes
 

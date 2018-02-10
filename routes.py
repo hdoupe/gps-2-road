@@ -7,7 +7,7 @@ import json
 from shapely.geometry import Point
 
 
-def getActivityPaths(activity_type = 'Ride'):
+def get_activity_paths(activity_type = 'Ride'):
 	activities = os.listdir('activity_data/gpx_data')
 	paths = []
 
@@ -23,7 +23,7 @@ def getActivityPaths(activity_type = 'Ride'):
 		elevation: list of elevation above sea level in meters
 		timestamp: time of gps emission
 """
-def parseRoutes(routePaths):
+def parse_routes(routePaths):
 	routes = []
 	for routePath in routePaths:
 		with open('activity_data/gpx_data/' + routePath) as f:
@@ -101,8 +101,8 @@ def routes_to_shp(routes, path_out="routes_shp/routes.shp", output_type="LineStr
 	shp.close()
 
 def routes_to_shp_setup(activity_type='Ride'):
-	paths = getActivityPaths(activity_type=activity_type)
-	routes = parseRoutes(paths)
+	paths = get_activity_paths(activity_type=activity_type)
+	routes = parse_routes(paths)
 	routes_to_shp(routes)
 
 
@@ -112,12 +112,12 @@ def convert_gpx_to_shp(gpx_path, output_type="LineString"):
 	if not os.path.exists(shp_dir):
 		os.mkdir(shp_dir)
 	shp_file = shp_dir + '/route.shp'
-	route = parseRoutes([gpx_path])
+	route = parse_routes([gpx_path])
 	routes_to_shp(route, shp_file, output_type=output_type)
 
 
 def convert_all_gpx_to_shp(activity_type='Ride', output_type="LineString"):
-	gpx_paths = getActivityPaths(activity_type=activity_type)
+	gpx_paths = get_activity_paths(activity_type=activity_type)
 
 	for gp in gpx_paths:
 		convert_gpx_to_shp(gp, output_type=output_type)

@@ -9,12 +9,12 @@ import numpy as np
 
 from shapely.geometry import shape
 from utils import overlap
-from fips import getFIPS
+from fips import get_fips
 
 
-def getRoads(fips_df = None, states = [], counties = []):
+def get_roads(fips_df = None, states = [], counties = []):
 	if fips_df is None:
-		fips_df = getFIPS(fips_filter = {'state_abbreviation':states,
+		fips_df = get_fips(fips_filter = {'state_abbreviation':states,
 		                                 'county_name':counties})
 
 	ftp = "ftp://ftp2.census.gov/geo/tiger/TIGER2016/ROADS/tl_2016_{state_fips}{county_fips}_roads.zip"
@@ -46,7 +46,7 @@ def getRoads(fips_df = None, states = [], counties = []):
 		roads(states = errors['states'], counties = errors['counties'])
 
 
-def unionRoads(fips_filter = {}):
+def union_roads(fips_filter = {}):
 
 	base = 'roads/tiger/{state_fips}{county_fips}_roads/tl_2016_{state_fips}{county_fips}_roads.shp'
 
@@ -63,7 +63,7 @@ def unionRoads(fips_filter = {}):
 	if not os.path.exists('union_roads/{}/'.format(allBase)):
 		os.mkdir('union_roads/{}/'.format(allBase))
 
-	fips_df = getFIPS(fips_filter=fips_filter)
+	fips_df = get_fips(fips_filter=fips_filter)
 
 	for i,row in fips_df.iterrows():
 		state_fips, county_fips = row['state_fips'],row['county_fips']
@@ -120,7 +120,7 @@ def get_road_map():
 
 	return road_map
 
-def getRoadsNBoundedBox(box, map_box_to_road):
+def get_roads_in_bounded_box(box, map_box_to_road):
 
 	road_boxes = np.array(list(map_box_to_road.keys()))
 
