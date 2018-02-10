@@ -9,6 +9,8 @@ import geopandas as gpd
 import fips
 
 def runner():
+	times = open('times.csv', 'w')
+	times.write("n_points,proj_time,tot_time,\n")
 	print("converting route gpx files to shp files...")
 	routes.convert_all_gpx_to_shp(activity_type='Ride', output_type="Point")
 	print("reading route shp files in as dataframes...")
@@ -29,7 +31,8 @@ def runner():
 		print("\t\tconcatenate road shp files to geopandas dataframes")
 		roads_df = roads.concatenate_roads(fips_df=fips_df)
 		project_start = datetime.now()
-		print("\tprojecting route...")
+		n_points = len(route_gpd)
+		print(f"\tprojecting route ({n_points} points)...")
 		proj = gpd_project.Project(roads_df)
 		route_gpd["road_name"] = route_gpd.geometry.apply(proj.project_point)
 		project_end = datetime.now()
@@ -45,6 +48,8 @@ def runner():
 		finish = datetime.now()
 		total_time = (finish - start).seconds
 		print(f'\troute took {total_time} seconds')
+		times.write(f"{n_points},{project_time},{total_time}\n")
+	times.close()
 
 if __name__ == '__main__':
 	runner()
