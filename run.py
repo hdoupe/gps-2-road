@@ -23,10 +23,9 @@ def runner():
             print("\t\tno overlapping counties-->continue")
             continue
         print("\t\tfetch tiger data...")
-        roads.getRoads(fips_df=fips_df)
+        roads.get_roads(fips_df=fips_df)
         print("\t\tconcatenate road shp files to geopandas dataframes")
         roads_df = roads.concatenate_roads(fips_df=fips_df)
-
         print("\tprojecting route...")
         proj = gpd_project.Project(roads_df)
         route_gpd["road_name"] = route_gpd.geometry.apply(proj.project_point)
@@ -37,7 +36,5 @@ def runner():
             os.mkdir("results/" + route_name)
         route_gpd.to_file("results/" + route_name)
 
-
 if __name__ == '__main__':
-	main2()
-	# main(states=['GA', 'DC'])
+	main(states=['GA', 'DC'])

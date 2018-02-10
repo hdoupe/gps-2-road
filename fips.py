@@ -6,7 +6,7 @@ import os
 
 import geopandas as gpd
 
-def getFIPS(fips_filter = {}):
+def get_fips(fips_filter = {}):
 	"""
 		start at widest filter and move down
 	"""
@@ -43,7 +43,7 @@ def get_overlapping_counties(route):
 	"""
 	cs = get_county_shapes()
 	overlap = cs[route.geometry.intersects(cs.geometry)]
-	
+
 	fips = pd.read_csv('state_county_fips.txt', dtype = 'object')
 	fips_keep = pd.merge(overlap, fips, left_on=["COUNTYFP", "STATEFP"], right_on=["county_fips", "state_fips"])
 
