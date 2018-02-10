@@ -32,7 +32,7 @@ class Project():
             return dist
 
         projections = hits.apply(project, axis=1)
-        loc = hits.index.get_loc(projections.argmin())
+        loc = hits.index.get_loc(projections.idxmin())
 
         return hits.iloc[loc].FULLNAME
 
