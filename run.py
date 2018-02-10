@@ -1,32 +1,42 @@
-from roads import *
-from routes import *
-from project import Project
+import os
+
+import routes
+import roads
+import gpd_project
 
 import geopandas as gpd
 import fips
 
-def main(states=[]):
-	print ('getting roads...')
-	getRoads(states=states)
-	print ('creating inverse map of road to bounded box...')
-	road_map = get_road_map()
-	print ('parsing activities...')
-	activity_type = 'Ride'
-	paths = getActivityPaths(activity_type = activity_type)
-	routes = parseRoutes(paths)
-	print ('projecting activities...')
-	proj = Project(routes)
+def runner():
+    print("converting route gpx files to shp files...")
+    routes.convert_all_gpx_to_shp(activity_type='Ride', output_type="Point")
+    print("reading route shp files in as dataframes...")
+    route_gpds = routes.get_geopandas_from_shp(activity_type="Ride",
+	                                            output_type="Point")
+    print("projecting routes...")
+    for route_gpd in route_gpds:
+        print("\troute: ", route_gpd.iloc[0].path)
+        print("\tgetting road data...")
+        print("\t\toverlapping_counties...")
+        fips_df = fips.get_overlapping_counties(route_gpd)
+        if len(fips_df) == 0:
+            print("\t\tno overlapping counties-->continue")
+            continue
+        print("\t\tfetch tiger data...")
+        roads.getRoads(fips_df=fips_df)
+        print("\t\tconcatenate road shp files to geopandas dataframes")
+        roads_df = roads.concatenate_roads(fips_df=fips_df)
 
-	for i in range(proj.boundedBoxes.shape[0]):
-		print(i/float(proj.boundedBoxes.shape[0]))
-		proj.project(proj.boundedBoxes[i], interval = 10)
+        print("\tprojecting route...")
+        proj = gpd_project.Project(roads_df)
+        route_gpd["road_name"] = route_gpd.geometry.apply(proj.project_point)
 
+        print("\twriting results...")
+        route_name = route_gpd.iloc[0].path.split('.')[0]
+        if not os.path.exists("results/" + route_name):
+            os.mkdir("results/" + route_name)
+        route_gpd.to_file("results/" + route_name)
 
-def main2():
-	route_path = "/Users/HANK/Documents/activities/gps_2_road/activity_data/Point_shp_data/20170827-121415-Ride"
-	route = gpd.read_file(route_path)
-	fips_df = fips.get_overlapping_counties(route)
-	getRoads(fips_df=fips_df)
 
 if __name__ == '__main__':
 	main2()
