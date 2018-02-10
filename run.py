@@ -23,7 +23,7 @@ def runner():
             print("\t\tno overlapping counties-->continue")
             continue
         print("\t\tfetch tiger data...")
-        roads.getRoads(fips_df=fips_df)
+        roads.get_roads(fips_df=fips_df)
         print("\t\tconcatenate road shp files to geopandas dataframes")
         roads_df = roads.concatenate_roads(fips_df=fips_df)
         print("\tprojecting route...")
